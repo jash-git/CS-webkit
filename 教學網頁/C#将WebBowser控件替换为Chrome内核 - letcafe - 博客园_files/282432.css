@@ -1,0 +1,14 @@
+#MySignature {
+    display: none;
+    background: rgb(230, 250, 230);
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px;
+    padding: 10px;
+    line-height: 1.5;
+    text-shadow: 1px 1px 1px #FFF;
+    font-size: 16px;
+}
+#blog-news a img {
+    width: 290px;
+}
+<link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap-grid.min.css" rel="stylesheet">

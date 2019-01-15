@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.cnblogs.com/letcafe/p/WebKitBrowser.html -->
+<html lang="zh-cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="origin">
+    <title>C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园</title>
+<meta property="og:description" content="摘要 由于最近要做一个浏览器式的软件，其中有不少地方需要使用到jQuery和BootStrap，但是在C#中，默认的WebBrowser控件默认使用的是IE的core，而低版本的IE在JS加载上总是容">
+    <link type="text/css" rel="stylesheet" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/blog-common.css">
+<link id="MainCss" type="text/css" rel="stylesheet" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/bundle-CodingLife.css">
+<link type="text/css" rel="stylesheet" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/282432.css">
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/bundle-CodingLife-mobile.css">
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/letcafe/rss">
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/letcafe/rsd.xml">
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/letcafe/wlwmanifest.xml">
+    <script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/osd.js.下載"></script><script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/amp4ads-host-v0.js.下載"></script><script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/pubads_impl_rendering_289.js.下載"></script><script async="" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/analytics.js.下載"></script><script type="text/javascript" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/encoder.js.下載"></script><script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/jquery-2.2.0.min.js.下載"></script>
+    <script>var currentBlogId=282432;var currentBlogApp='letcafe',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/blog-common.js.下載" type="text/javascript"></script>
+<link rel="preload" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/f.txt" as="script"><script type="text/javascript" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/f.txt"></script><link rel="preload" href="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/f(1).txt" as="script"><script type="text/javascript" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/f(1).txt"></script><script src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/pubads_impl_289.js.下載" async=""></script><link rel="prefetch" href="https://tpc.googlesyndication.com/safeframe/1-0-31/html/container.html"></head>
+<body>
+<a name="top"></a>
+
+
+<!--done-->
+<div id="home">
+<div id="header">
+	<div id="blogTitle">
+	<a id="lnkBlogLogo" href="https://www.cnblogs.com/letcafe/"><img id="blogLogo" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/logo.gif" alt="返回主页"></a>			
+		
+<!--done-->
+<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/letcafe/">letcafe</a></h1>
+<h2>慢慢造轮子</h2>
+
+
+
+		
+	</div><!--end: blogTitle 博客的标题和副标题 -->
+	<div id="navigator">
+		
+<ul id="navList">
+<li><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a></li>
+<li><a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/letcafe/">首页</a></li>
+<li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li>
+<li><a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/letcafe">联系</a></li>
+<li><a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/letcafe/rss">订阅</a>
+<!--<a id="blog_nav_rss_image" class="aHeaderXML" href="https://www.cnblogs.com/letcafe/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>--></li>
+<li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li>
+</ul>
+		<div class="blogStats">
+			
+			<div id="blog_stats">
+<span id="stats_post_count">随笔 - 19&nbsp; </span>
+<span id="stats_article_count">文章 - 0&nbsp; </span>
+<span id="stats-comment_count">评论 - 93</span>
+</div>
+			
+		</div><!--end: blogStats -->
+	</div><!--end: navigator 博客导航栏 -->
+</div><!--end: header 头部 -->
+
+<div id="main">
+	<div id="mainContent">
+	<div class="forFlow">
+		
+        <div id="post_detail">
+<!--done-->
+<div id="topics">
+	<div class="post">
+		<h1 class="postTitle">
+			<a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html">C#将WebBowser控件替换为Chrome内核</a>
+		</h1>
+		<div class="clear"></div>
+		<div class="postBody">
+			<div id="cnblogs_post_body" class="blogpost-body"><h2>摘要</h2>
+<p>　　由于最近要做一个浏览器式的软件，其中有不少地方需要使用到jQuery和BootStrap，但是在C#中，默认的WebBrowser控件默认使用的是IE的core，而低版本的IE在JS加载上总是容易有问题，因此，打算使用Chrome的内核替换IE。</p>
+<h2>准备工作</h2>
+<p>　　首先，你要明白Chrome浏览器的内核不叫Chrome，而是Webkit，因此，我们只要找到Webkit的项目就好了。</p>
+<p>　　1.下载WebKit的项目bin,网址如下：</p>
+<p>　　<a href="https://sourceforge.net/projects/webkitdotnet/files/WebKit%20.NET%200.x/0.5/WebKit.NET-0.5-bin-cairo.zip/download">https://sourceforge.net/projects/webkitdotnet/files/WebKit%20.NET%200.x/0.5/WebKit.NET-0.5-bin-cairo.zip/download</a>。</p>
+<p>　　2.下载解压后的目录结构如下：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221184921261-1663485233.jpg" alt=""></p>
+<p>　　3.将bin文件夹下的所有（没错！是所有文件复制），并粘贴到项目文件夹下，目标目录是：项目名/bin/Debug/</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221185139870-1399586662.jpg" alt="" width="492" height="344"></p>
+<p>　　4.导入Webkitbrowser的dll到你的项目中。在VS2015的操作如下（其他的类推）：</p>
+<p>　　　在Solution Explorer下，选中你的项目名，然后右键，选择Add，然后选择Reference，如下图：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221185929807-1843246076.jpg" alt="" width="392" height="322"></p>
+<p>　　5.在弹出的对话框里。选择Browse -&gt; Browse...，然后选择你的：项目名/bin/Debug下之前粘贴的WebKitBrowser.dll导入，结果如下图：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221190429964-404363987.jpg" alt="" width="548" height="377"></p>
+<h2>编码阶段</h2>
+<p>　　1.你要做的，首先选择你之前下载的bin目录下的WebKitBrowser.dll，然后复制，如下图：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161222133602714-1265477474.jpg" alt=""></p>
+<p>　　2.在C#的控件栏中，自己建一个自定义的C#控件栏，例如我的叫WebBrowser,然后在工具栏中粘贴刚才复制的dll,最后效果如下图：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161222134007495-1834738740.jpg" alt=""></p>
+<p>　　之后你就可以正常使用WebKitBrowser控件了。</p>
+<p>　　3.大功告成了，通过这个网站可以测试浏览器的内核，网址:<a href="http://ie.icoa.cn/" target="_blank">http://ie.icoa.cn/</a></p>
+<p>　　至于运行代码，如下给出：</p>
+<div class="cnblogs_code">
+<pre><span style="color: #008080;">1</span> <span style="color: #0000ff;">private</span> <span style="color: #0000ff;">void</span> Form1_Load(<span style="color: #0000ff;">object</span><span style="color: #000000;"> sender, EventArgs e)
+</span><span style="color: #008080;">2</span> <span style="color: #000000;">{
+</span><span style="color: #008080;">3</span>     webKitBrowser1.Navigate(<span style="color: #800000;">"</span><span style="color: #800000;">http://ie.icoa.cn/</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+</span><span style="color: #008080;">4</span> }</pre>
+</div>
+<p>　　下面是配置前和配置后的对比：</p>
+<p>　　配置前：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221193516651-50093555.jpg" alt="" width="447" height="334"></p>
+<p>　　配置后：</p>
+<p>　　<img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/946524-20161221193653042-245030637.jpg" alt="" width="456" height="331"></p>
+<h2>致谢</h2>
+<p>　　感谢<a href="http://www.cnblogs.com/y112102/">s_p</a>评论中指出的问题，另外如果你想制作Release版而不是Debug的，你存放的目录应该是：项目名/bin/release。</p>
+<h2>补充</h2>
+<p>　　感谢园友的指出，WebKitBrowser这个项目目前已经不维护了，随着.Net版本的提升，也很有可能会出现问题，因此推荐另一个比较好用的CefSharp，具体流程和WebKitBrowser基本一致。</p>
+<p>　　如果有园友想用CefSharp，欢迎查看这篇文章，讲的很详细，来自codeceo：<a href="http://www.codeceo.com/article/cefsharp-charp-app-chrome.html">传送门在这里:)</a></p>
+<h2>结语</h2>
+<p>　　其实换个内核并没有那么复杂，勇于尝试，我想你也一定可以的，有疑问欢迎留言！</p>
+<p>　　</p></div><div id="MySignature" style="display: block;"><div>作者：<a href="http://www.cnblogs.com/letcafe/">letcafe</a></div>
+<div>出处：<a href="http://www.cnblogs.com/letcafe/">http://www.cnblogs.com/letcafe/
+</a></div>
+<p>-------------------------------------------</p>
+<p>个性签名：编程水太深，先会造轮子！</p>
+<p>如果觉得这篇文章对你有小小的帮助的话，记得在右下角点个<span>“推荐”</span>哦，博主在此感谢！</p>
+<p></p></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag">标签: <a href="https://www.cnblogs.com/letcafe/tag/C%23/">C#</a>, <a href="https://www.cnblogs.com/letcafe/tag/Chrome/">Chrome</a>, <a href="https://www.cnblogs.com/letcafe/tag/WebKit/">WebKit</a>, <a href="https://www.cnblogs.com/letcafe/tag/WebKitBroswer/">WebKitBroswer</a>, <a href="https://www.cnblogs.com/letcafe/tag/%E5%86%85%E6%A0%B8/">内核</a>, <a href="https://www.cnblogs.com/letcafe/tag/%E6%9B%BF%E6%8D%A2/">替换</a>, <a href="https://www.cnblogs.com/letcafe/tag/core/">core</a></div>
+<div id="blog_post_info"><div id="green_channel">
+        <a href="javascript:void(0);" id="green_channel_digg" onclick="DiggIt(6208872,cb_blogId,1);green_channel_success(this,&#39;谢谢推荐！&#39;);">好文要顶</a>
+            <a id="green_channel_follow" onclick="follow(&#39;d70487fc-d70c-e611-9fc1-ac853d9f53cc&#39;);" href="javascript:void(0);">关注我</a>
+    <a id="green_channel_favorite" onclick="AddToWz(cb_entryId);return false;" href="javascript:void(0);">收藏该文</a>
+    <a id="green_channel_weibo" href="javascript:void(0);" title="分享至新浪微博" onclick="ShareToTsina()"><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/icon_weibo_24.png" alt=""></a>
+    <a id="green_channel_wechat" href="javascript:void(0);" title="分享至微信" onclick="shareOnWechat()"><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/wechat.png" alt=""></a>
+</div>
+<div id="author_profile">
+    <div id="author_profile_info" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/letcafe/" target="_blank"><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/20160428122002.png" class="author_avatar" alt=""></a>
+        <div id="author_profile_detail" class="author_profile_info">
+            <a href="http://home.cnblogs.com/u/letcafe/">letcafe</a><br>
+            <a href="http://home.cnblogs.com/u/letcafe/followees">关注 - 11</a><br>
+            <a href="http://home.cnblogs.com/u/letcafe/followers">粉丝 - 23</a>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="author_profile_honor"></div>
+    <div id="author_profile_follow">
+                <a href="javascript:void(0);" onclick="follow(&#39;d70487fc-d70c-e611-9fc1-ac853d9f53cc&#39;);return false;">+加关注</a>
+    </div>
+</div>
+<div id="div_digg">
+    <div class="diggit" onclick="votePost(6208872,&#39;Digg&#39;)">
+        <span class="diggnum" id="digg_count">73</span>
+    </div>
+    <div class="buryit" onclick="votePost(6208872,&#39;Bury&#39;)">
+        <span class="burynum" id="bury_count">3</span>
+    </div>
+    <div class="clear"></div>
+    <div class="diggword" id="digg_tips">
+    </div>
+</div>
+<script type="text/javascript">
+    currentDiggType = 0;
+</script></div>
+<div class="clear"></div>
+<div id="post_next_prev"><a href="https://www.cnblogs.com/letcafe/p/5930315.html" class="p_n_p_prefix">« </a> 上一篇：<a href="https://www.cnblogs.com/letcafe/p/5930315.html" title="发布于2016-10-04 12:23">jQuery Ajax传值给Servlet,在Servlet里Get接受参数乱码的解决方法</a><br><a href="https://www.cnblogs.com/letcafe/p/LinuxConfigMysql.html" class="p_n_p_prefix">» </a> 下一篇：<a href="https://www.cnblogs.com/letcafe/p/LinuxConfigMysql.html" title="发布于2017-01-08 17:43">Ubuntu16.04 server下配置MySQL，并开启远程连接</a><br></div>
+</div>
+
+
+		</div>
+		<div class="postDesc">posted @ <span id="post-date">2016-12-21 19:44</span> <a href="https://www.cnblogs.com/letcafe/">letcafe</a> 阅读(<span id="post_view_count">15229</span>) 评论(<span id="post_comment_count">48</span>)  <a href="https://i.cnblogs.com/EditPosts.aspx?postid=6208872" rel="nofollow">编辑</a> <a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#" onclick="AddToWz(6208872);return false;">收藏</a></div>
+	</div>
+	<script type="text/javascript">var allowComments=true,cb_blogId=282432,cb_entryId=6208872,cb_blogApp=currentBlogApp,cb_blogUserGuid='d70487fc-d70c-e611-9fc1-ac853d9f53cc',cb_entryCreatedDate='2016/12/21 19:44:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+	
+</div><!--end: topics 文章、评论容器-->
+</div><a name="!comments"></a><div id="blog-comments-placeholder"><div id="comments_pager_top"></div>
+<br>
+<div class="feedback_area_title">评论列表</div>
+<div class="feedbackNoItems"></div>	
+
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586545" class="layer">#1楼</a><a name="3586545" id="comment_anchor_3586545"></a>  <span class="comment_date">2016-12-21 20:00</span> <a id="a_comment_author_3586545" href="https://www.cnblogs.com/smiler/" target="_blank">幕三少</a> <a href="http://msg.cnblogs.com/send/%E5%B9%95%E4%B8%89%E5%B0%91" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586545" class="blog_comment_body">mark</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586545,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586545,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586545_avatar" style="display:none;">http://pic.cnblogs.com/face/75468/20170829140218.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586549" class="layer">#2楼</a><a name="3586549" id="comment_anchor_3586549"></a>  <span class="comment_date">2016-12-21 20:06</span> <a id="a_comment_author_3586549" href="https://www.cnblogs.com/xcj26/" target="_blank">Sam Xiao</a> <a href="http://msg.cnblogs.com/send/Sam%20Xiao" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586549" class="blog_comment_body">Awesomium 也是Chrome内核，比 Webkit 更好啊！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586549,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586549,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586549_avatar" style="display:none;">http://pic.cnblogs.com/face/48022/20150116085345.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586552" class="layer">#3楼</a><a name="3586552" id="comment_anchor_3586552"></a>  <span class="comment_date">2016-12-21 20:09</span> <a id="a_comment_author_3586552" href="https://www.cnblogs.com/cuiwenyuan/" target="_blank">troy.cui</a> <a href="http://msg.cnblogs.com/send/troy.cui" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586552" class="blog_comment_body">赞一个，下次用上</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586552,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586552,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586552_avatar" style="display:none;">http://pic.cnblogs.com/face/u125871.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586585" class="layer">#4楼</a><a name="3586585" id="comment_anchor_3586585"></a>  <span class="comment_date">2016-12-21 21:16</span> <a id="a_comment_author_3586585" href="https://www.cnblogs.com/aaa6032/" target="_blank">新的开始</a> <a href="http://msg.cnblogs.com/send/%E6%96%B0%E7%9A%84%E5%BC%80%E5%A7%8B" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586585" class="blog_comment_body">只是单单加载网页，用webkitbrowser替换webbrowser还是比较简单的，涉及到复杂一些的操作，网上的资料太少。。。我昨天做了个包含注入js功能的浏览器程序，本来也是用的webkitbrowser，后来还是放弃了。。。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586585,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586585,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586585_avatar" style="display:none;">http://pic.cnblogs.com/face/97265/20151229223759.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586586" class="layer">#5楼</a><a name="3586586" id="comment_anchor_3586586"></a>  <span class="comment_date">2016-12-21 21:18</span> <a id="a_comment_author_3586586" href="https://www.cnblogs.com/wangyjx/" target="_blank">yyww</a> <a href="http://msg.cnblogs.com/send/yyww" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586586" class="blog_comment_body">Chrome已经不用webkit了好吧，已经是blink了啊</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586586,&#39;Digg&#39;,this)">支持(2)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586586,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586632" class="layer">#6楼</a><a name="3586632" id="comment_anchor_3586632"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-21 23:01</span> <a id="a_comment_author_3586632" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586632" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586586" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586586);">@</a>
+yyww<br>刚才查了一下，你说的不错，哈哈，还是得多关注一下浏览器发展：)</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586632,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586632,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586632_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586633" class="layer">#7楼</a><a name="3586633" id="comment_anchor_3586633"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-21 23:02</span> <a id="a_comment_author_3586633" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586633" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586585" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586585);">@</a>
+新的开始<br>嗯，是的，这样比较简洁高效！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586633,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586633,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586633_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586675" class="layer">#8楼</a><a name="3586675" id="comment_anchor_3586675"></a>  <span class="comment_date">2016-12-22 04:29</span> <a id="a_comment_author_3586675" href="https://www.cnblogs.com/XiaoFaye/" target="_blank">XiaoFaye</a> <a href="http://msg.cnblogs.com/send/XiaoFaye" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586675" class="blog_comment_body">WebBrowser 设置最新的兼容模式应该可以正常浏览绝大多数网站吧。Chrome那一堆文件太大了，不知道有没有更好的部署方式。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586675,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586675,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586675_avatar" style="display:none;">http://pic.cnblogs.com/face/22235/20140324081339.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586689" class="layer">#9楼</a><a name="3586689" id="comment_anchor_3586689"></a>  <span class="comment_date">2016-12-22 07:58</span> <a id="a_comment_author_3586689" href="https://www.cnblogs.com/jRoger/" target="_blank">JRoger</a> <a href="http://msg.cnblogs.com/send/JRoger" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586689" class="blog_comment_body">一般夠用了。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586689,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586689,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586689_avatar" style="display:none;">http://pic.cnblogs.com/face/u136080.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586691" class="layer">#10楼</a><a name="3586691" id="comment_anchor_3586691"></a>  <span class="comment_date">2016-12-22 07:58</span> <a id="a_comment_author_3586691" href="https://www.cnblogs.com/263613093/" target="_blank">Я!ńɡ</a> <a href="http://msg.cnblogs.com/send/%D0%AF%21%C5%84%C9%A1" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586691" class="blog_comment_body">你这个只是替换为webkit内核，chrome是cef内核，另外webkitbrowser做js交互你会想死</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586691,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586691,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586691_avatar" style="display:none;">http://pic.cnblogs.com/face/35289/20160920094759.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586747" class="layer">#11楼</a><a name="3586747" id="comment_anchor_3586747"></a>  <span class="comment_date">2016-12-22 09:13</span> <a id="a_comment_author_3586747" href="https://www.cnblogs.com/xyyie/" target="_blank">网络白蚁</a> <a href="http://msg.cnblogs.com/send/%E7%BD%91%E7%BB%9C%E7%99%BD%E8%9A%81" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586747" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586691" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586691);">@</a>
+汤国臣<br>chrome v8引擎。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586747,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586747,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586749" class="layer">#12楼</a><a name="3586749" id="comment_anchor_3586749"></a>  <span class="comment_date">2016-12-22 09:14</span> <a id="a_comment_author_3586749" href="https://www.cnblogs.com/xyyie/" target="_blank">网络白蚁</a> <a href="http://msg.cnblogs.com/send/%E7%BD%91%E7%BB%9C%E7%99%BD%E8%9A%81" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586749" class="blog_comment_body">cef sharp 也可以看看。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586749,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586749,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586756" class="layer">#13楼</a><a name="3586756" id="comment_anchor_3586756"></a>  <span class="comment_date">2016-12-22 09:20</span> <a id="a_comment_author_3586756" href="https://www.cnblogs.com/lvjunlei/" target="_blank">彼年豆蔻</a> <a href="http://msg.cnblogs.com/send/%E5%BD%BC%E5%B9%B4%E8%B1%86%E8%94%BB" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586756" class="blog_comment_body">还是CefSharp靠谱</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586756,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586756,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586756_avatar" style="display:none;">http://pic.cnblogs.com/face/495326/20130204164553.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586759" class="layer">#14楼</a><a name="3586759" id="comment_anchor_3586759"></a>  <span class="comment_date">2016-12-22 09:21</span> <a id="a_comment_author_3586759" href="http://home.cnblogs.com/u/1066376/" target="_blank">Yxooooo</a> <a href="http://msg.cnblogs.com/send/Yxooooo" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586759" class="blog_comment_body">一般直接用  cefsharp</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586759,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586759,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586766" class="layer">#15楼</a><a name="3586766" id="comment_anchor_3586766"></a>  <span class="comment_date">2016-12-22 09:25</span> <a id="a_comment_author_3586766" href="https://www.cnblogs.com/hanliping/" target="_blank">小莜</a> <a href="http://msg.cnblogs.com/send/%E5%B0%8F%E8%8E%9C" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586766" class="blog_comment_body">mark 之前有遇到一些网站用ie没办法爬取 <br>以后再遇到就试试</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586766,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586766,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586766_avatar" style="display:none;">http://pic.cnblogs.com/face/586337/20160131195615.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586770" class="layer">#16楼</a><a name="3586770" id="comment_anchor_3586770"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-22 09:28</span> <a id="a_comment_author_3586770" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586770" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586749" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586749);">@</a>
+网络白蚁<br>嗯，之前不知道CefSharp，刚才查了一下，CefSharp占的空间挺大,本博客的方式在小程序里也不错。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586770,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586770,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586770_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586783" class="layer">#17楼</a><a name="3586783" id="comment_anchor_3586783"></a>  <span class="comment_date">2016-12-22 09:35</span> <a id="a_comment_author_3586783" href="https://www.cnblogs.com/y112102/" target="_blank">s_p</a> <a href="http://msg.cnblogs.com/send/s_p" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586783" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586691" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586691);">@</a>
+汤国臣<br>是麻烦还是性能不好 还是？之前也用了WebBrowser 调用js没有你说的想象中的想死？ </div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586783,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586783,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586783_avatar" style="display:none;">http://pic.cnblogs.com/face/331132/20150709142727.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586787" class="layer">#18楼</a><a name="3586787" id="comment_anchor_3586787"></a>  <span class="comment_date">2016-12-22 09:39</span> <a id="a_comment_author_3586787" href="https://www.cnblogs.com/liyunzhi/" target="_blank">liyunzhi</a> <a href="http://msg.cnblogs.com/send/liyunzhi" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586787" class="blog_comment_body">棒棒哒，勇于探索的精神不错哟。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586787,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586787,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586787_avatar" style="display:none;">http://pic.cnblogs.com/face/333539/20180227153008.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586791" class="layer">#19楼</a><a name="3586791" id="comment_anchor_3586791"></a>  <span class="comment_date">2016-12-22 09:41</span> <a id="a_comment_author_3586791" href="https://www.cnblogs.com/zhangl/" target="_blank">TechLife</a> <a href="http://msg.cnblogs.com/send/TechLife" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586791" class="blog_comment_body">楼主，这样替换后，js就不能调用c#的方法了吧？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586791,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586791,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586791_avatar" style="display:none;">http://pic.cnblogs.com/face/u199567.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586794" class="layer">#20楼</a><a name="3586794" id="comment_anchor_3586794"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-22 09:44</span> <a id="a_comment_author_3586794" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586794" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586791" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586791);">@</a>
+TechLife<br>我做的程序没有用到你说的JS调用C#，不过我想WebBrowser有的功能这个WebKitBrowser应该都会有的，WebKitBrowser应该是继承的WebBrowser控件，大部分属性方法都有保留，如有不对，欢迎指出！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586794,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586794,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586794_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586797" class="layer">#21楼</a><a name="3586797" id="comment_anchor_3586797"></a>  <span class="comment_date">2016-12-22 09:46</span> <a id="a_comment_author_3586797" href="https://www.cnblogs.com/zhangl/" target="_blank">TechLife</a> <a href="http://msg.cnblogs.com/send/TechLife" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586797" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586794" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586794);">@</a>
+SpringLife<br>恩，有没有这方面的参考文档？我最近也在做这个</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586797,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586797,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586797_avatar" style="display:none;">http://pic.cnblogs.com/face/u199567.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586811" class="layer">#22楼</a><a name="3586811" id="comment_anchor_3586811"></a>  <span class="comment_date">2016-12-22 09:53</span> <a id="a_comment_author_3586811" href="https://www.cnblogs.com/zhangl/" target="_blank">TechLife</a> <a href="http://msg.cnblogs.com/send/TechLife" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586811" class="blog_comment_body">lz，报这个错，我是vs2013开发的<br><br>无法将类型“WebKit.WebKitBrowser”隐式转换为“System.Windows.Forms.WebBrowser”</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586811,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586811,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586811_avatar" style="display:none;">http://pic.cnblogs.com/face/u199567.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586819" class="layer">#23楼</a><a name="3586819" id="comment_anchor_3586819"></a>  <span class="comment_date">2016-12-22 10:01</span> <a id="a_comment_author_3586819" href="https://www.cnblogs.com/y112102/" target="_blank">s_p</a> <a href="http://msg.cnblogs.com/send/s_p" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586819" class="blog_comment_body">刚刚尝试了下<br> <img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/331132-20161222095945573-1196966435.png" alt="" border="0" "=""><br> 拖 的winfrom自带的 WebBrowser 这样不行啊。this.WebBrowser1他是winfrom的 new WebKitBrowser 这个又是下载的 这样肯定报错吗 不知道楼主是怎么解决的。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586819,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586819,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586819_avatar" style="display:none;">http://pic.cnblogs.com/face/331132/20150709142727.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586821" class="layer">#24楼</a><a name="3586821" id="comment_anchor_3586821"></a>  <span class="comment_date">2016-12-22 10:02</span> <a id="a_comment_author_3586821" href="https://www.cnblogs.com/zhangl/" target="_blank">TechLife</a> <a href="http://msg.cnblogs.com/send/TechLife" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586821" class="blog_comment_body">未能加载文件或程序集“WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be”或它的某一个依赖项。试图加载格式不正确的程序。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586821,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586821,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586821_avatar" style="display:none;">http://pic.cnblogs.com/face/u199567.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586823" class="layer">#25楼</a><a name="3586823" id="comment_anchor_3586823"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-22 10:04</span> <a id="a_comment_author_3586823" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586823" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586811" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586811);">@</a>
+TechLife<br>不好意思，博客没有指出，我一会儿在博客里加一下。<br>同样是在Form.Designer.cs里，将<br>private System.Windows.Forms.WebBrowser webBrowser1;<br>改为<br>private WebKit.WebKitBrowser webBrowser1;<br>谢谢指出！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586823,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586823,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586823_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586827" class="layer">#26楼</a><a name="3586827" id="comment_anchor_3586827"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-22 10:06</span> <a id="a_comment_author_3586827" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586827" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586819" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586819);">@</a>
+s_p<br>抱歉，博客里没有指出这个问题，我一会补充一下，你的问题在25楼给出了解决。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586827,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586827,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586827_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586828" class="layer">#27楼</a><a name="3586828" id="comment_anchor_3586828"></a>  <span class="comment_date">2016-12-22 10:08</span> <a id="a_comment_author_3586828" href="https://www.cnblogs.com/zhangl/" target="_blank">TechLife</a> <a href="http://msg.cnblogs.com/send/TechLife" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586828" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586823" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586823);">@</a>
+SpringLife<br>恩，这个问题我已经改了<br>现在编译成功，F5执行后，在Main入口处报错，错误信息为：<br><br>未能加载文件或程序集“WebKitBrowser, Version=0.5.0.0, Culture=neutral, PublicKeyToken=b967213f6d29a3be”或它的某一个依赖项。试图加载格式不正确的程序。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586828,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586828,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586828_avatar" style="display:none;">http://pic.cnblogs.com/face/u199567.jpg</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586831" class="layer">#28楼</a><a name="3586831" id="comment_anchor_3586831"></a>  <span class="comment_date">2016-12-22 10:11</span> <a id="a_comment_author_3586831" href="https://www.cnblogs.com/purplecows/" target="_blank">囧月言炎</a> <a href="http://msg.cnblogs.com/send/%E5%9B%A7%E6%9C%88%E8%A8%80%E7%82%8E" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586831" class="blog_comment_body">mark</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586831,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586831,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586831_avatar" style="display:none;">http://pic.cnblogs.com/face/509118/20130804143859.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586838" class="layer">#29楼</a><a name="3586838" id="comment_anchor_3586838"></a>  <span class="comment_date">2016-12-22 10:14</span> <a id="a_comment_author_3586838" href="https://www.cnblogs.com/y112102/" target="_blank">s_p</a> <a href="http://msg.cnblogs.com/send/s_p" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586838" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586827" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586827);">@</a>
+SpringLife<br>我在在工具栏里面添加引用 <br><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/331132-20161222101316464-2122871266.png" alt="" border="0" "=""><br>这样也可以。 按你说的改 Form.Designer.cs也可以。<br>我去又报错了 问题多多啊<br><br><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/331132-20161222101359792-1925191098.png" alt="" border="0" "=""></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586838,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586838,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586838_avatar" style="display:none;">http://pic.cnblogs.com/face/331132/20150709142727.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586860" class="layer">#30楼</a><a name="3586860" id="comment_anchor_3586860"></a>  <span class="comment_date">2016-12-22 10:26</span> <a id="a_comment_author_3586860" href="https://www.cnblogs.com/habin/" target="_blank">habin</a> <a href="http://msg.cnblogs.com/send/habin" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586860" class="blog_comment_body">希望楼主做个深入的应用，webkit好多坑，参考资料少，真不敢往里跳</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586860,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586860,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586880" class="layer">#31楼</a><a name="3586880" id="comment_anchor_3586880"></a>[<span class="louzhu">楼主</span>]  <span class="comment_date">2016-12-22 10:38</span> <a id="a_comment_author_3586880" href="https://www.cnblogs.com/letcafe/" target="_blank">letcafe</a> <a href="http://msg.cnblogs.com/send/letcafe" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586880" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586838" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586838);">@</a>
+s_p<br>非常感谢你的提醒，我试了一下，这样确实方便很多！<br>删繁就简，我修改下博客:)</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586880,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586880,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586880_avatar" style="display:none;">http://pic.cnblogs.com/face/946524/20160428122002.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586894" class="layer">#32楼</a><a name="3586894" id="comment_anchor_3586894"></a>  <span class="comment_date">2016-12-22 10:45</span> <a id="a_comment_author_3586894" href="http://home.cnblogs.com/u/584126/" target="_blank">HBird</a> <a href="http://msg.cnblogs.com/send/HBird" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586894" class="blog_comment_body">为什么不用Awesomium ，另外你引用的这个玩意儿，还在维护吗？不维护并且自己无法维护的东西不要引入项目中</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586894,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586894,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586924" class="layer">#33楼</a><a name="3586924" id="comment_anchor_3586924"></a>  <span class="comment_date">2016-12-22 11:14</span> <a id="a_comment_author_3586924" href="http://home.cnblogs.com/u/153546/" target="_blank">wdwwtzy</a> <a href="http://msg.cnblogs.com/send/wdwwtzy" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586924" class="blog_comment_body">打包完多大?</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586924,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586924,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586935" class="layer">#34楼</a><a name="3586935" id="comment_anchor_3586935"></a>  <span class="comment_date">2016-12-22 11:21</span> <a id="a_comment_author_3586935" href="https://www.cnblogs.com/y112102/" target="_blank">s_p</a> <a href="http://msg.cnblogs.com/send/s_p" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586935" class="blog_comment_body"><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586880" title="查看所回复的评论" onclick="commentManager.renderComments(0,50,3586880);">@</a>
+SpringLife<br>这个<a href="http://stackoverflow.com/questions/7714935/webkit-net-and-openwebkitsharp-error-failed-to-initialize-activation-context" target="_blank">http://stackoverflow.com/questions/7714935/webkit-net-and-openwebkitsharp-error-failed-to-initialize-activation-context</a> 问题解决<br>我用的release模式 这个dll 要放到这里 <br><br>            this.webBrowser1 = new WebKit.WebKitBrowser();<br>            webBrowser1.Url = new Uri("<a href="https://www.baidu.com/" target="_blank">https://www.baidu.com/</a>");<br>            //webBrowser1.Navigate("<a href="https://www.baidu.com/" target="_blank">https://www.baidu.com/</a>");<br>一个普通的页面？这样不行<br>还是不玩了。 之前有个同事老是说什么基于google内核(说话高大档次) 不懂这个 在这里看到了cefsharp  。看了楼主的文章  原来就是那么一回事。<br>还有补充一点 复制到bin 下面 还是release是看你调试启动的 。不都是复制到bin。 写一篇好的文章 不容易啊 。考虑的问题多</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586935,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586935,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586935_avatar" style="display:none;">http://pic.cnblogs.com/face/331132/20150709142727.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586958" class="layer">#35楼</a><a name="3586958" id="comment_anchor_3586958"></a>  <span class="comment_date">2016-12-22 11:36</span> <a id="a_comment_author_3586958" href="https://www.cnblogs.com/lang-yang/" target="_blank">枫，一落而知秋</a> <a href="http://msg.cnblogs.com/send/%E6%9E%AB%EF%BC%8C%E4%B8%80%E8%90%BD%E8%80%8C%E7%9F%A5%E7%A7%8B" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586958" class="blog_comment_body">感觉被标题忽悠了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586958,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586958,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586958_avatar" style="display:none;">http://pic.cnblogs.com/face/626064/20140421094158.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586967" class="layer">#36楼</a><a name="3586967" id="comment_anchor_3586967"></a>  <span class="comment_date">2016-12-22 11:43</span> <a id="a_comment_author_3586967" href="https://www.cnblogs.com/djzny/" target="_blank">Djzny</a> <a href="http://msg.cnblogs.com/send/Djzny" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586967" class="blog_comment_body">被忽悠了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586967,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586967,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586967_avatar" style="display:none;">http://pic.cnblogs.com/face/361992/20140924143742.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3586989" class="layer">#37楼</a><a name="3586989" id="comment_anchor_3586989"></a>  <span class="comment_date">2016-12-22 12:23</span> <a id="a_comment_author_3586989" href="https://www.cnblogs.com/ycbt/" target="_blank">搵中求胜</a> <a href="http://msg.cnblogs.com/send/%E6%90%B5%E4%B8%AD%E6%B1%82%E8%83%9C" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3586989" class="blog_comment_body">对了，博主编译一下winform看看有多大？</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3586989,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3586989,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3586989_avatar" style="display:none;">http://pic.cnblogs.com/face/227601/20130129121810.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587003" class="layer">#38楼</a><a name="3587003" id="comment_anchor_3587003"></a>  <span class="comment_date">2016-12-22 12:50</span> <a id="a_comment_author_3587003" href="https://www.cnblogs.com/batsing/" target="_blank">batsing</a> <a href="http://msg.cnblogs.com/send/batsing" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587003" class="blog_comment_body">外行也想说你这方法肯定不科学</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587003,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587003,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587003_avatar" style="display:none;">http://pic.cnblogs.com/face/681503/20141018114352.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587019" class="layer">#39楼</a><a name="3587019" id="comment_anchor_3587019"></a>  <span class="comment_date">2016-12-22 13:22</span> <a id="a_comment_author_3587019" href="https://www.cnblogs.com/lelehellow/" target="_blank">总要有点追求吧</a> <a href="http://msg.cnblogs.com/send/%E6%80%BB%E8%A6%81%E6%9C%89%E7%82%B9%E8%BF%BD%E6%B1%82%E5%90%A7" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587019" class="blog_comment_body">这个webkit内核也是可以操作dom的。我已实现模拟点击效果。</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587019,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587019,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587019_avatar" style="display:none;">http://pic.cnblogs.com/face/890372/20161220123546.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587106" class="layer">#40楼</a><a name="3587106" id="comment_anchor_3587106"></a>  <span class="comment_date">2016-12-22 14:43</span> <a id="a_comment_author_3587106" href="https://www.cnblogs.com/tiankong2012/" target="_blank">#天空#</a> <a href="http://msg.cnblogs.com/send/%23%E5%A4%A9%E7%A9%BA%23" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587106" class="blog_comment_body">mark</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587106,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587106,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587197" class="layer">#41楼</a><a name="3587197" id="comment_anchor_3587197"></a>  <span class="comment_date">2016-12-22 15:45</span> <a id="a_comment_author_3587197" href="https://www.cnblogs.com/dongqinnanren/" target="_blank">东秦男人</a> <a href="http://msg.cnblogs.com/send/%E4%B8%9C%E7%A7%A6%E7%94%B7%E4%BA%BA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587197" class="blog_comment_body">最近刚准备搞一个winform的地图开发，正想换chrome内核，正好干货来了！</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587197,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587197,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587198" class="layer">#42楼</a><a name="3587198" id="comment_anchor_3587198"></a>  <span class="comment_date">2016-12-22 15:47</span> <a id="a_comment_author_3587198" href="https://www.cnblogs.com/linfei721/" target="_blank">林飞</a> <a href="http://msg.cnblogs.com/send/%E6%9E%97%E9%A3%9E" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587198" class="blog_comment_body">不错哦，IE的内核到处是坑，用webkit就省心多了</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587198,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587198,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587198_avatar" style="display:none;">http://pic.cnblogs.com/face/46137/20130422162657.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587204" class="layer">#43楼</a><a name="3587204" id="comment_anchor_3587204"></a>  <span class="comment_date">2016-12-22 15:51</span> <a id="a_comment_author_3587204" href="https://www.cnblogs.com/zeje/" target="_blank">哲智</a> <a href="http://msg.cnblogs.com/send/%E5%93%B2%E6%99%BA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587204" class="blog_comment_body"><a href="https://www.codeproject.com/tips/825526/csharp-webbrowser-vs-gecko-vs-awesomium-vs-openweb" target="_blank">https://www.codeproject.com/tips/825526/csharp-webbrowser-vs-gecko-vs-awesomium-vs-openweb</a></div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587204,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587204,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587204_avatar" style="display:none;">http://pic.cnblogs.com/face/87284/20160216124644.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587208" class="layer">#44楼</a><a name="3587208" id="comment_anchor_3587208"></a>  <span class="comment_date">2016-12-22 15:54</span> <a id="a_comment_author_3587208" href="https://www.cnblogs.com/qixingduanyan/" target="_blank">受戒人</a> <a href="http://msg.cnblogs.com/send/%E5%8F%97%E6%88%92%E4%BA%BA" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587208" class="blog_comment_body">看到标题的第一眼就想到了曾经用过的cefSharp</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587208,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587208,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587208_avatar" style="display:none;">http://pic.cnblogs.com/face/500685/20130320104527.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587233" class="layer">#45楼</a><a name="3587233" id="comment_anchor_3587233"></a>  <span class="comment_date">2016-12-22 16:10</span> <a id="a_comment_author_3587233" href="https://www.cnblogs.com/jzz20151105/" target="_blank">一江明月一江秋</a> <a href="http://msg.cnblogs.com/send/%E4%B8%80%E6%B1%9F%E6%98%8E%E6%9C%88%E4%B8%80%E6%B1%9F%E7%A7%8B" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587233" class="blog_comment_body">MARK</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587233,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587233,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587343" class="layer">#46楼</a><a name="3587343" id="comment_anchor_3587343"></a>  <span class="comment_date">2016-12-22 17:41</span> <a id="a_comment_author_3587343" href="https://www.cnblogs.com/wangjinming/" target="_blank">wangjinming</a> <a href="http://msg.cnblogs.com/send/wangjinming" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587343" class="blog_comment_body"><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/510935-20161222174032557-652195381.png" alt="" border="0" "=""><br>根本跑不起来，win8,vs2012，64位系统</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587343,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587343,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587343_avatar" style="display:none;">http://pic.cnblogs.com/face/510935/20161219112321.png</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3587387" class="layer">#47楼</a><a name="3587387" id="comment_anchor_3587387"></a>  <span class="comment_date">2016-12-22 18:42</span> <a id="a_comment_author_3587387" href="https://www.cnblogs.com/shen6041/" target="_blank">shen6041</a> <a href="http://msg.cnblogs.com/send/shen6041" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3587387" class="blog_comment_body">还可以试试cefglue</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3587387,&#39;Digg&#39;,this)">支持(0)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3587387,&#39;Bury&#39;,this)">反对(0)</a></div><span id="comment_3587387_avatar" style="display:none;">http://pic.cnblogs.com/face/u66084.jpg?id=04134044</span>
+			</div>
+		</div>
+	
+		<div class="feedbackItem">
+			<div class="feedbackListSubtitle">
+				<div class="feedbackManage">
+					&nbsp;&nbsp;<span class="comment_actions"></span>
+				</div>
+				<a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#3588138" class="layer">#48楼</a><a name="3588138" id="comment_anchor_3588138"></a><span id="comment-maxId" style="display:none;">3588138</span><span id="comment-maxDate" style="display:none;">2016/12/23 16:37:49</span>  <span class="comment_date">2016-12-23 16:37</span> <a id="a_comment_author_3588138" href="https://www.cnblogs.com/onecool/" target="_blank">不想当码农的码农</a> <a href="http://msg.cnblogs.com/send/%E4%B8%8D%E6%83%B3%E5%BD%93%E7%A0%81%E5%86%9C%E7%9A%84%E7%A0%81%E5%86%9C" title="发送站内短消息" class="sendMsg2This">&nbsp;</a>
+			</div>
+			<div class="feedbackCon">
+				<div id="comment_body_3588138" class="blog_comment_body">WebKit这个JS是不行，很多网站访问不了。<br><br>用过ChromeWebBrowser.net</div><div class="comment_vote"><a href="javascript:void(0);" class="comment_digg" onclick="return voteComment(3588138,&#39;Digg&#39;,this)">支持(1)</a><a href="javascript:void(0);" class="comment_bury" onclick="return voteComment(3588138,&#39;Bury&#39;,this)">反对(0)</a></div>
+			</div>
+		</div>
+	<div id="comments_pager_bottom"></div></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id="comment_form" class="commentform">
+<a name="commentform"></a>
+<div id="divCommentShow"></div>
+<div id="comment_nav"><span id="span_refresh_tips"></span><a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#" onclick="return RefreshPage();">刷新页面</a><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html#top">返回顶部</a></div>
+<div id="comment_form_container"><div class="login_tips">注册用户登录后才能发表评论，请 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return login(&#39;commentform&#39;);">登录</a> 或 <a rel="nofollow" href="javascript:void(0);" class="underline" onclick="return register();">注册</a>，<a href="http://www.cnblogs.com/">访问</a>网站首页。</div></div>
+<div class="ad_text_commentbox" id="ad_text_under_commentbox"></div>
+<div id="ad_t2"><a href="http://www.ucancode.com/index.htm" target="_blank" onclick="ga(&#39;send&#39;, &#39;event&#39;, &#39;Link&#39;, &#39;click&#39;, &#39;T2-工控&#39;)">【推荐】超50万VC++源码: 大型组态工控、电力仿真CAD与GIS源码库！</a><br></div>
+<div id="opt_under_post"></div>
+<script async="async" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/gpt.js.下載"></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id="cnblogs_c1" class="c_ad_block">
+<div id="div-gpt-ad-1546353474406-0" style="height:250px; width:300px;" data-google-query-id="CKLHwKeZ798CFQHRlgodMxEKJQ">
+<script>
+if(canShowAdsense()) {
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1546353474406-0'); });
+}
+</script>
+<div id="google_ads_iframe_/1090369/C1_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C1_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C1_0" width="300" height="250" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="1" data-load-complete="true" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/saved_resource.html"></iframe></div></div>
+</div>
+<div id="under_post_news"><div class="itnews c_ad_block"><b>相关博文：</b><br>·  <a href="https://www.cnblogs.com/soundcode/p/8078543.html" target="_blank" onclick="clickRecomItmem(8078543,&#39;raZ0rE9ZbhbRub4InIwF1ThbEoXUhDAmA8OjdyHEwxb2q2w27Gjr2lDdqtWFHO00wKeUi4WhCRxJwnqgNUJMbUuPCSwJDoD0l+9gkvwMBIFQv3ZBfZgjSDPRtQBTYxFe/s+8gOuWVFZuxzUPqRudrilGxQxxutCt8MbbuFF84czuIX21ejEqzqMsqJT10g==&#39;)">C#Winform将WebBowser控件替换为Chrome内核</a><br>·  <a href="https://www.cnblogs.com/vmyspace/archive/2012/03/19/2405553.html" target="_blank" onclick="clickRecomItmem(2405553,&#39;SAmDf58QjmCUktlwsg9bCHiCAf6KHsFYEAn5hr5yc5x1VdePnFc42P4Z14aE6iXxFpA4M3k1pWOre/tdlGMh0pRm6CB86E5xrRFnW88ZXuKpWjMIhJ40/b30jSRMZRhtciyfZbpk0T/g17KaA5TKGybpK/gAbSptSEkUqXWaHAjHsg==&#39;)">C#将byte[]转换为string</a><br>·  <a href="https://www.cnblogs.com/tianzhiyun/archive/2011/12/18/2291755.html" target="_blank" onclick="clickRecomItmem(2291755,&#39;MC11AAKbR87qA+dg7KYDKrHitE/I6Q3VFtWba5c7lXfeqlZ5uuRzijnPdVqB2la3j2+lEF+8kZdw4WmC5hxBa9WNcOxxvlnrMmnqv8ykNk9ux9axg3xUGr1ibK5tx2VSBFzkSZ+jGqB8PSwFzO8NnCenLz2CMUVIEwwbrnsY2wenUw==&#39;)">C#回车替换为其他字符</a><br>·  <a href="https://www.cnblogs.com/conquerorren/p/8520579.html" target="_blank" onclick="clickRecomItmem(8520579,&#39;Y/9/0EoJGpBLk/4lnyXC9OyiXRKFYJc93k6ZerIIOJdIpUJSt40Pn4+FuI6iTfkyhF1SCayD108gBBwJFy4ugivE7aFmWV1hz8r9U9JCmxZELVFxSj7UORwVxVU65pwxTuyEqKAdCRBMrj9bTx/P47ga56wowsQIJFdmzYqZwdnQfQ==&#39;)">【Eclipse】将Tab替换为空格</a><br>·  <a href="https://www.cnblogs.com/intotf/p/4554850.html" target="_blank" onclick="clickRecomItmem(4554850,&#39;ycDcGGp8vRVZzdyHAz+HVANc7xKAGd/jR3Y0zBSlb3pQOgBZDFy9eiz7vYFFIgirPG+EbXopSydVmBIZVm/1WLh+6VRdqmttf5/KqWyypS5eB33Enl8FWNhrKspPgDjt3RauhKJnrLMWhXAnKCTDIFPfNKbrR5xuQKcR3JileHpL+EKWkjGNXBkKug4u3i5YHQ==&#39;)">c# 将json转换为DataTable</a><br></div></div>
+<div id="cnblogs_c2" class="c_ad_block">
+    <div id="div-gpt-ad-1539008685004-0" style="height:60px; width:468px;" data-google-query-id="COzIvqeZ798CFVdevQodzHsMag">
+    <script>
+    if(canShowAdsense()) {
+        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1539008685004-0'); });
+    }
+    </script>
+    <div id="google_ads_iframe_/1090369/C2_0__container__" style="border: 0pt none;"><iframe id="google_ads_iframe_/1090369/C2_0" title="3rd party ad content" name="google_ads_iframe_/1090369/C2_0" width="468" height="60" scrolling="no" marginwidth="0" marginheight="0" frameborder="0" style="border: 0px; vertical-align: bottom;" data-google-container-id="2" data-load-complete="true" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/saved_resource(1).html"></iframe></div></div>
+</div>
+<div id="under_post_kb"><div class="itnews c_ad_block"><b>最新新闻</b>：<br> ·  <a href="https://news.cnblogs.com/n/617352/" target="_blank">高通打官司打出来的“江山”</a><br> ·  <a href="https://news.cnblogs.com/n/617342/" target="_blank">“月球嫩芽”破土而出！嫦娥四号“月宫种菜”究竟是如何做到的？</a><br> ·  <a href="https://news.cnblogs.com/n/617350/" target="_blank">苹果“崴脚”，供应商“骨折”</a><br> ·  <a href="https://news.cnblogs.com/n/617347/" target="_blank">贩卖焦虑终难持续，微博想帮用户“高级吃瓜”才是知识付费的正确姿势</a><br> ·  <a href="https://news.cnblogs.com/n/617337/" target="_blank">SpaceX裁员细节曝光：员工通过邮件得知自己未来命运</a><br>» <a href="http://news.cnblogs.com/" title="IT新闻" target="_blank">更多新闻...</a></div></div>
+<div id="HistoryToday" class="c_ad_block"></div>
+<script type="text/javascript">
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+	</div><!--end: forFlow -->
+	</div><!--end: mainContent 主体内容容器-->
+
+	<div id="sideBar">
+		<div id="sideBarMain">
+			
+<!--done-->
+<div class="newsItem">
+<h3 class="catListTitle">公告</h3>
+	<div id="blog-news"><a href="https://info.flagcounter.com/EhBj"><img src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/saved_resource" alt="Flag Counter" border="0"></a><div id="profile_block">昵称：<a href="https://home.cnblogs.com/u/letcafe/">letcafe</a><br>园龄：<a href="https://home.cnblogs.com/u/letcafe/" title="入园时间：2016-04-28">2年8个月</a><br>粉丝：<a href="https://home.cnblogs.com/u/letcafe/followers/">23</a><br>关注：<a href="https://home.cnblogs.com/u/letcafe/followees/">11</a><div id="p_b_follow"><a href="javascript:void(0);" onclick="follow(&#39;d70487fc-d70c-e611-9fc1-ac853d9f53cc&#39;)">+加关注</a></div><script>getFollowStatus('d70487fc-d70c-e611-9fc1-ac853d9f53cc')</script></div></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script>
+			
+			<div id="leftcontentcontainer">
+				<div id="blog-sidecolumn"><div id="sidebar_search" class="sidebar-block"></div><div id="sidebar_shortcut" class="sidebar-block">
+<div class="catListLink">
+<h3 class="catListTitle">常用链接</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/letcafe/p/" title="我的博客的随笔列表">我的随笔</a></li><li><a href="https://www.cnblogs.com/letcafe/MyComments.html" title="我发表过的评论列表">我的评论</a></li><li><a href="https://www.cnblogs.com/letcafe/OtherPosts.html" title="我评论过的随笔列表">我的参与</a></li><li><a href="https://www.cnblogs.com/letcafe/RecentComments.html" title="我的博客的评论列表">最新评论</a></li><li><a href="https://www.cnblogs.com/letcafe/tag/" title="我的博客的标签列表">我的标签</a></li>
+</ul>
+<div id="itemListLin_con" style="display:none;">
+<ul>
+
+</ul>
+</div>
+</div></div><div id="sidebar_recentposts" class="sidebar-block">
+<div class="catListEssay">
+<h3 class="catListTitle">最新随笔</h3>
+<ul>
+<li><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html">1. Web登录其实没那么简单</a></li><li><a href="https://www.cnblogs.com/letcafe/p/tomcatWorkPermissionDenied.html">2. 【出错记录】Tomcat非root用户启动无法拥有权限读写文件</a></li><li><a href="https://www.cnblogs.com/letcafe/p/httpsWithPigeons.html">3. 【转】用信鸽来解释 HTTPS</a></li><li><a href="https://www.cnblogs.com/letcafe/p/tomcatAddHttps.html">4. Tomcat9使用免费的Https证书加密网站</a></li><li><a href="https://www.cnblogs.com/letcafe/p/MappingJackson2MessageConverter.html">5. Spring使用MappingJackson2MessageConverter发送接收ActiveMQ消息</a></li><li><a href="https://www.cnblogs.com/letcafe/p/mysqlautodump.html">6. MySQL定时备份数据库（全库备份）</a></li><li><a href="https://www.cnblogs.com/letcafe/p/rabbitmq1.html">7. RabbitMQ教程（一）——安装配置</a></li><li><a href="https://www.cnblogs.com/letcafe/p/mat.html">8. Eclipse中安装MemoryAnalyzer插件及使用</a></li><li><a href="https://www.cnblogs.com/letcafe/p/cloudgame2.html">9. 云游戏学习与实践(二)——安装GamingAnywhere</a></li><li><a href="https://www.cnblogs.com/letcafe/p/cloudgame1.html">10. 云游戏学习与实践(一)——云游戏概述</a></li>
+</ul>
+</div>
+</div><div id="sidebar_categories">
+<div id="sidebar_postarchive" class="catListPostArchive sidebar-block">
+<h3 class="catListTitle">随笔档案</h3>
+
+<ul>
+
+<li><a id="CatList_LinkList_0_Link_0" href="https://www.cnblogs.com/letcafe/archive/2018/11.html">2018年11月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_1" href="https://www.cnblogs.com/letcafe/archive/2018/05.html">2018年5月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_2" href="https://www.cnblogs.com/letcafe/archive/2018/03.html">2018年3月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_3" href="https://www.cnblogs.com/letcafe/archive/2017/08.html">2017年8月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_4" href="https://www.cnblogs.com/letcafe/archive/2017/07.html">2017年7月 (2)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_5" href="https://www.cnblogs.com/letcafe/archive/2017/01.html">2017年1月 (3)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_6" href="https://www.cnblogs.com/letcafe/archive/2016/12.html">2016年12月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_7" href="https://www.cnblogs.com/letcafe/archive/2016/10.html">2016年10月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_8" href="https://www.cnblogs.com/letcafe/archive/2016/09.html">2016年9月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_9" href="https://www.cnblogs.com/letcafe/archive/2016/08.html">2016年8月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_10" href="https://www.cnblogs.com/letcafe/archive/2016/05.html">2016年5月 (1)</a> </li>
+
+<li><a id="CatList_LinkList_0_Link_11" href="https://www.cnblogs.com/letcafe/archive/2016/04.html">2016年4月 (1)</a> </li>
+
+</ul>
+
+</div>
+
+</div><div id="sidebar_recentcomments" class="sidebar-block"><div id="recent_comments_wrap">
+<div class="catListComment">
+<h3 class="catListTitle">最新评论</h3>
+
+	<div id="RecentCommentsBlock"><ul>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html#4121589">1. Re:Web登录其实没那么简单</a></li>
+        <li class="recent_comment_body">按验证码那个,如果使用http,避免不了伪造吧&gt;我使用相同的session_id去获取新的验证码,就可以再次请求了</li>
+        <li class="recent_comment_author">--ios白菜</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html#4116099">2. Re:Web登录其实没那么简单</a></li>
+        <li class="recent_comment_body">@碎景请详细说说你的思路...</li>
+        <li class="recent_comment_author">--一叶兰舟飘</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html#4115934">3. Re:Web登录其实没那么简单</a></li>
+        <li class="recent_comment_body">@一叶兰舟飘貌似你完全没get我的两个点1.两个一次性uuid和你的一次性公钥私钥,安全等级差不多,但少很多cpu消耗2.风险点是,你怎么判断是否应该给当前"用户",合理的签发公钥或uuid.......</li>
+        <li class="recent_comment_author">--碎景</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html#4115880">4. Re:Web登录其实没那么简单</a></li>
+        <li class="recent_comment_body">@碎景随机生成的这对公钥和私钥是一次性的, 只能使用一次, 真正的用户, 调用一次后, 服务器校验一次后, 清空这对公钥私钥的缓存,即使别人拿到了公钥, 加密后,去服务器请求, 服务器找不到对应的私钥......</li>
+        <li class="recent_comment_author">--一叶兰舟飘</li>
+        <li class="recent_comment_title"><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html#4115858">5. Re:Web登录其实没那么简单</a></li>
+        <li class="recent_comment_body">@一叶兰舟飘其实不用这么花里胡哨,使用两个uuid,安全性和你这个差不多.当你使用动态token后,风险点就不是反向,而是如何保证申请token的过程可信,不然你就是用量子加密,你把公钥给了一个不信任......</li>
+        <li class="recent_comment_author">--碎景</li>
+</ul>
+</div>
+</div>
+</div></div><div id="sidebar_topviewedposts" class="sidebar-block"><div id="topview_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">阅读排行榜</h3>
+	<div id="TopViewPostsBlock"><ul><li><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html">1. C#将WebBowser控件替换为Chrome内核(15228)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/5930315.html">2. jQuery Ajax传值给Servlet,在Servlet里Get接受参数乱码的解决方法(6315)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/5874362.html">3. 在Windows7上如何找到Cookie(5194)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html">4. Web登录其实没那么简单(4144)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/mysqlautodump.html">5. MySQL定时备份数据库（全库备份）(1948)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topcommentedposts" class="sidebar-block"><div id="topfeedback_posts_wrap">
+<div class="catListFeedback">
+<h3 class="catListTitle">评论排行榜</h3>
+	<div id="TopFeedbackPostsBlock"><ul><li><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html">1. C#将WebBowser控件替换为Chrome内核(48)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html">2. Web登录其实没那么简单(38)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/5930315.html">3. jQuery Ajax传值给Servlet,在Servlet里Get接受参数乱码的解决方法(2)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/mat.html">4. Eclipse中安装MemoryAnalyzer插件及使用(2)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/cloudgame2.html">5. 云游戏学习与实践(二)——安装GamingAnywhere(1)</a></li></ul></div>
+</div>
+</div></div><div id="sidebar_topdiggedposts" class="sidebar-block"><div id="topdigg_posts_wrap">
+<div class="catListView">
+<h3 class="catListTitle">推荐排行榜</h3>
+<div id="TopDiggPostsBlock"><ul><li><a href="https://www.cnblogs.com/letcafe/p/WebKitBrowser.html">1. C#将WebBowser控件替换为Chrome内核(73)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/loginSecurity.html">2. Web登录其实没那么简单(45)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/httpsWithPigeons.html">3. 【转】用信鸽来解释 HTTPS(2)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/tomcatAddHttps.html">4. Tomcat9使用免费的Https证书加密网站(1)</a></li><li><a href="https://www.cnblogs.com/letcafe/p/cloudgame2.html">5. 云游戏学习与实践(二)——安装GamingAnywhere(1)</a></li></ul></div>
+</div></div></div></div><script type="text/javascript">loadBlogSideColumn();</script>
+			</div>
+			
+		</div><!--end: sideBarMain -->
+	</div><!--end: sideBar 侧边栏容器 -->
+	<div class="clear"></div>
+	</div><!--end: main -->
+	<div class="clear"></div>
+	<div id="footer">
+		
+<!--done-->
+Copyright ©2019 letcafe
+	</div><!--end: footer -->
+</div><!--end: home 自定义的最大容器 -->
+
+
+
+<iframe id="google_osd_static_frame_9246316386898" name="google_osd_static_frame" style="display: none; width: 0px; height: 0px;" src="./C#将WebBowser控件替换为Chrome内核 - letcafe - 博客园_files/saved_resource(2).html"></iframe></body></html>
